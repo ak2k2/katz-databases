@@ -2,7 +2,7 @@
 
 ## Commands Overview
 
-The CLI supports various operations for managing students, courses, and registrations within the database. Each command is followed by specific arguments and options to perform the desired action.
+The CLI supports a few operations for managing students, courses, and registrations within the database.
 
 ### `view`
 Displays data from the database.
