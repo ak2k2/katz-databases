@@ -186,7 +186,7 @@ def main():
     args = parse_args()
 
     # Initialize the connection and database
-    conn = Connection("database.json")
+    conn = Connection("data/database.json")
     with conn as database:
         students, courses, registrations = (
             database["students"],
