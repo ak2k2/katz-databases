@@ -1,0 +1,25 @@
+{
+    "students": {
+        "1": {
+            "name": "armaan"
+        },
+        "2": {
+            "name": "monty"
+        }
+    },
+    "courses": {
+        "1": {
+            "name": "ECEfreshman",
+            "course_number": 145,
+            "instructor": "Rocky",
+            "num_seats": 10
+        },
+        "2": {
+            "name": "HSSfreshman",
+            "course_number": 315,
+            "instructor": "Wego",
+            "num_seats": 3
+        }
+    },
+    "registrations": {}
+}

@@ -1,7 +1,11 @@
 import json
 import os
+import pathlib
+import sys
 import tempfile
 import unittest
+
+sys.path.append(str(pathlib.Path(__file__).parent.parent.absolute()))
 
 from orm import *
 

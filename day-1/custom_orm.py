@@ -1,4 +1,6 @@
+import argparse
 import json
+import sys
 
 import pandas as pd
 
@@ -120,10 +122,6 @@ def get_courses_for_student(student_id: int, registrations: list) -> list:
 
 def get_students_for_course(course_id: int, registrations: list) -> list:
     return [reg["student_id"] for reg in registrations if reg["course_id"] == course_id]
-
-
-import argparse
-import sys
 
 
 def parse_args():
