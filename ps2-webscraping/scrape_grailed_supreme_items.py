@@ -1,62 +1,50 @@
-from time import sleep
-
-import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
+import time
+import pandas as pd
 
 
 def scrape_grailed():
-    # Set up Selenium WebDriver
     options = Options()
-    # options.headless = True
+    # options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
     driver.get("https://www.grailed.com/shop/yswa-3w-gw")
 
-    sleep(4)
-    # Initialize data storage
+    start_time = time.time()
+    # Simulate scrolling to load all items
+    while time.time() - start_time < 50:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(2)
+
     data = {"Name": [], "Price": [], "Image URL": [], "Link": []}
 
-    # Wait for the items to load and find all item containers
-    items = driver.find_elements(By.CSS_SELECTOR, ".feed-item")
-
+    items = driver.find_elements(By.CSS_SELECTOR, ".feed-item:not(.empty-item)")
     for item in items:
-        # Get item details
         try:
-            name_element = item.find_element(
+            time.sleep(0.1)
+            link_element = item.find_elements(By.CSS_SELECTOR, "a.listing-item-link")
+            title_element = item.find_elements(
                 By.CSS_SELECTOR, ".ListingMetadata-module__title___Rsj55"
             )
-            price_element = item.find_element(
-                By.CSS_SELECTOR,
-                ".Price-module__onSale___1pIHp, .Price-module__root___dK0sQ",
+            price_element = item.find_elements(
+                By.CSS_SELECTOR, ".Price-module__onSale___1pIHp"
             )
-            image_element = item.find_element(
+            image_element = item.find_elements(
                 By.CSS_SELECTOR, ".listing-cover-photo img"
             )
-            link_element = item.find_element(By.CSS_SELECTOR, "a.listing-item-link")
 
-            name = name_element.text if name_element else "No Name"
-            price = price_element.text if price_element else "No Price"
-            image_url = (
-                image_element.get_attribute("src") if image_element else "No Image URL"
-            )
-            link = link_element.get_attribute("href") if link_element else "No Link"
-
-            data["Name"].append(name)
-            data["Price"].append(price)
-            data["Image URL"].append(image_url)
-            data["Link"].append(link)
+            if link_element and title_element and price_element and image_element:
+                data["Name"].append(title_element[0].text)
+                data["Price"].append(price_element[0].text)
+                data["Image URL"].append(image_element[0].get_attribute("src"))
+                data["Link"].append(link_element[0].get_attribute("href"))
         except Exception as e:
             print(f"Error extracting item details: {e}")
 
     driver.quit()
-
-    # Convert data to DataFrame
     return pd.DataFrame(data)
 
 
-if __name__ == "__main__":
-    items_data = scrape_grailed()
-    print(items_data)
-    items_data.to_csv("grailed_items.csv", index=False)
+df = scrape_grailed()
+df.to_csv("grailed_long.csv", index=False)
