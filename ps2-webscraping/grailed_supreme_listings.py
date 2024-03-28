@@ -7,15 +7,15 @@ import pandas as pd
 
 def scrape_grailed():
     options = Options()
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
     driver.get("https://www.grailed.com/shop/yswa-3w-gw")
 
     start_time = time.time()
-    # Simulate scrolling to load all items
-    while time.time() - start_time < 50:
+    # Simulate scrolling for 50 seconds to load additional items
+    while time.time() - start_time < 200:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(2)
+        time.sleep(1)
 
     data = {"Name": [], "Price": [], "Image URL": [], "Link": []}
 
