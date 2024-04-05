@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 def main():
     options = Options()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
     wait = WebDriverWait(driver, 10)
 

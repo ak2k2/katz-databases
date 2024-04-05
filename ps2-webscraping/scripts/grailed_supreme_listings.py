@@ -1,28 +1,31 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 import time
+
 import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 
 def scrape_grailed():
     options = Options()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
     driver.get("https://www.grailed.com/shop/yswa-3w-gw")
 
     start_time = time.time()
     # Simulate scrolling for 50 seconds to load additional items
-    while time.time() - start_time < 200:
+    while time.time() - start_time < 100:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
 
     data = {"Name": [], "Price": [], "Image URL": [], "Link": []}
 
     items = driver.find_elements(By.CSS_SELECTOR, ".feed-item:not(.empty-item)")
+
+    print(f"Number of items: {len(items)}")
     for item in items:
         try:
-            time.sleep(0.1)
+            time.sleep(0.2)
             link_element = item.find_elements(By.CSS_SELECTOR, "a.listing-item-link")
             title_element = item.find_elements(
                 By.CSS_SELECTOR, ".ListingMetadata-module__title___Rsj55"
